@@ -51,6 +51,7 @@
             background: linear-gradient(135deg, #f3fbf4 0%, #fff9e6 45%, #fff0f5 100%);
             min-height: 100vh;
             overflow-x: hidden;
+            animation: luchtKleur 8s ease-out forwards;
         }
 
         /* Ambient sunlight and pastel glow orbs */
@@ -120,6 +121,39 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
             animation: shimmer 2.8s infinite;
         }
+
+        .landschap-container {
+      width: 10vw;
+      max-width: 250px;
+    }
+
+    /* De lucht kleurt mee van zachte ochtendschemer naar lenteblauw */
+    @keyframes luchtKleur {
+      0%   { background-color: #1B263B; }
+      40%  { background-color: #F4A261; }
+      100% { background-color: #A8DADC; }
+    }
+
+    /* De zon stijgt omhoog vanachter de heuvels */
+    @keyframes zonOpkomst {
+      0%   { transform: translateY(190px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* De stralen draaien continu rustig rond */
+    @keyframes stralenDraai {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .zon-opkomst {
+      animation: zonOpkomst 6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .zon-stralen {
+      transform-origin: 400px 260px;
+      animation: stralenDraai 30s linear infinite;
+    }
     </style>
 </head>
 <body class="font-sans text-emerald-950 antialiased selection:bg-pink-200 selection:text-emerald-950 flex flex-col justify-between relative">
@@ -152,13 +186,48 @@
 
     <!-- Main Centered Countdown Container -->
     <main class="relative z-20 flex-grow flex items-center justify-center px-4 py-8 sm:py-12">
+        
         <section class="glass-panel w-full max-w-4xl rounded-3xl p-6 sm:p-10 md:p-12 text-center relative overflow-hidden">
             
             <!-- Decorative Corner Botanical SVG Accents -->
-            <svg class="absolute -top-6 -left-6 w-28 h-28 sm:w-36 sm:h-36 text-pink-300/45 pointer-events-none transform -rotate-12" viewBox="0 0 100 100" fill="currentColor">
-                <path d="M50 15 C58 28, 72 32, 85 50 C72 58, 58 72, 50 85 C42 72, 28 58, 15 50 C28 32, 42 28, 50 15 Z"/>
-                <circle cx="50" cy="50" r="8" fill="#fbc02d" opacity="0.7"/>
-            </svg>
+
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full text-pink-600 mb-4 shadow-sm">
+                
+    <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Opkomende zon zonder gezicht">
+      <defs>
+        <radialGradient id="zonKern" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#FFF3B0" />
+          <stop offset="70%" stop-color="#FFD166" />
+          <stop offset="100%" stop-color="#F77F00" />
+        </radialGradient>
+      </defs>
+
+      <!-- De opkomende zon -->
+      <g class="zon-opkomst">
+        <!-- Draaiende zonnestralen -->
+        <g class="zon-stralen" stroke="#FFD166" stroke-width="6" stroke-linecap="round">
+          <line x1="400" y1="165" x2="400" y2="188" />
+          <line x1="400" y1="332" x2="400" y2="355" />
+          <line x1="305" y1="260" x2="328" y2="260" />
+          <line x1="472" y1="260" x2="495" y2="260" />
+          <line x1="333" y1="193" x2="349" y2="209" />
+          <line x1="451" y1="311" x2="467" y2="327" />
+          <line x1="467" y1="193" x2="451" y2="209" />
+          <line x1="349" y1="311" x2="333" y2="327" />
+        </g>
+
+        <!-- Zachte gloed -->
+        <circle cx="400" cy="260" r="68" fill="#FFD166" opacity="0.25" />
+
+        <!-- Effen zonnekern (zonder gezicht) -->
+        <circle cx="400" cy="260" r="52" fill="url(#zonKern)" />
+      </g>
+
+      <!-- Lenteheuvels op de voorgrond -->
+      <path d="M0 410 Q 220 350, 450 415 T 800 395 L 800 500 L 0 500 Z" fill="#52B788" />
+      <path d="M0 440 Q 300 480, 580 420 T 800 440 L 800 500 L 0 500 Z" fill="#2D6A4F" />
+    </svg>
+  </div>
             <svg class="absolute -bottom-8 -right-8 w-32 h-32 sm:w-44 sm:h-44 text-emerald-300/40 pointer-events-none transform rotate-45" viewBox="0 0 100 100" fill="currentColor">
                 <path d="M50 10 C75 30, 85 60, 50 90 C15 60, 25 30, 50 10 Z"/>
             </svg>
