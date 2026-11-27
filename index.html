@@ -134,22 +134,18 @@
 
     <!-- Top Subtle Header / Status Pill -->
     <header class="relative z-20 w-full max-w-5xl mx-auto px-4 pt-6 sm:pt-8 flex flex-wrap items-center justify-between gap-3">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/70 backdrop-blur-md border border-white/80 shadow-sm text-xs sm:text-sm font-medium text-emerald-800">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-            <span class="w-2 h-2 rounded-full bg-emerald-500 -ml-4"></span>
-            <span id="season-status-badge">Vernal Equinox Approaching</span>
-        </div>
+        
 
         <!-- Interactive Breeze / Celebration Test Controls -->
         <div class="flex items-center gap-2">
-            <button id="gust-btn" type="button" class="px-3.5 py-1.5 rounded-full bg-white/70 hover:bg-white/95 active:scale-95 transition-all backdrop-blur-md border border-white/80 shadow-sm text-xs sm:text-sm font-medium text-emerald-800 flex items-center gap-1.5 cursor-pointer" title="Send a gentle spring breeze">
+            <button id="gust-btn" type="button" class="px-3.5 py-1.5 rounded-full bg-white/70 hover:bg-white/95 active:scale-95 transition-all backdrop-blur-md border border-white/80 shadow-sm text-xs sm:text-sm font-medium text-emerald-800 flex items-center gap-1.5 cursor-pointer" title="Stuur een zachte lentebrys door de bloesems">
                 <svg class="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
-                <span>Spring Breeze</span>
+                <span>Lentebrysje</span>
             </button>
-            <button id="preview-celebration-btn" type="button" class="px-3.5 py-1.5 rounded-full bg-pink-100/80 hover:bg-pink-200/80 active:scale-95 transition-all backdrop-blur-md border border-pink-200/80 shadow-sm text-xs sm:text-sm font-medium text-pink-900 flex items-center gap-1.5 cursor-pointer" title="Preview what happens when the countdown reaches zero">
-                <span>Preview Bloom</span>
+            <button id="preview-celebration-btn" type="button" class="px-3.5 py-1.5 rounded-full bg-pink-100/80 hover:bg-pink-200/80 active:scale-95 transition-all backdrop-blur-md border border-pink-200/80 shadow-sm text-xs sm:text-sm font-medium text-pink-900 flex items-center gap-1.5 cursor-pointer" title="Preview wat er gebeurt op 21 maart">
+                <span>Preview Bloesems</span>
             </button>
         </div>
     </header>
@@ -172,16 +168,16 @@
                 <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
                 </svg>
-                <span>March 21, <span id="target-year-display">2027</span></span>
+                <span>21 maart, <span id="target-year-display">2027</span></span>
             </div>
 
             <!-- Main Heading -->
             <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-emerald-950 tracking-tight leading-tight mb-3">
-                Countdown to <span class="italic bg-gradient-to-r from-emerald-700 via-teal-600 to-pink-600 bg-clip-text text-transparent">Spring</span>
+                Aftellen tot <span class="italic bg-gradient-to-r from-emerald-700 via-teal-600 to-pink-600 bg-clip-text text-transparent">de Lente</span>
             </h1>
             
             <p id="subtitle-text" class="text-emerald-800/80 text-sm sm:text-base md:text-lg max-w-xl mx-auto mb-8 sm:mb-10 font-normal leading-relaxed">
-                Counting every sunlit moment until the blossoms awaken and nature blooms anew.
+                Elk zonnemoment aftellen tot de bloesems ontwaken en de natuur opnieuw bloeit.
             </p>
 
             <!-- Countdown Grid (Hidden when celebration mode is active) -->
@@ -190,28 +186,28 @@
                 <div class="glass-digit-card rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden">
                     <div class="w-8 h-1 rounded-full bg-emerald-400/70 mb-3"></div>
                     <span id="days" class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-emerald-950 tabular-nums leading-none">00</span>
-                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Days</span>
+                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Dagen</span>
                 </div>
 
                 <!-- Hours -->
                 <div class="glass-digit-card rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden">
                     <div class="w-8 h-1 rounded-full bg-amber-300/90 mb-3"></div>
                     <span id="hours" class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-emerald-950 tabular-nums leading-none">00</span>
-                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Hours</span>
+                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Uren</span>
                 </div>
 
                 <!-- Minutes -->
                 <div class="glass-digit-card rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden">
                     <div class="w-8 h-1 rounded-full bg-pink-300/90 mb-3"></div>
                     <span id="minutes" class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-emerald-950 tabular-nums leading-none">00</span>
-                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Minutes</span>
+                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Minuten</span>
                 </div>
 
                 <!-- Seconds -->
                 <div class="glass-digit-card rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden">
                     <div class="w-8 h-1 rounded-full bg-rose-400/80 mb-3"></div>
                     <span id="seconds" class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-pink-600 tabular-nums leading-none">00</span>
-                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Seconds</span>
+                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Seconden</span>
                 </div>
             </div>
 
@@ -223,13 +219,13 @@
                     </svg>
                 </div>
                 <h2 class="font-serif text-3xl sm:text-5xl font-bold text-emerald-950 mb-2">
-                    Spring Has Arrived!
+                    De Lente Is Aangekomen!
                 </h2>
                 <p class="text-emerald-800/90 text-sm sm:text-base leading-relaxed mb-5">
-                    Happy First Day of Spring! May your days be filled with warm sunlight, fresh beginnings, and blooming joy.
+                    Gelukkige Eerste Dag van de Lente! Moge jouw dagen gevuld zijn met warm zonlicht, een vers begin en bloeiende vreugde.
                 </p>
                 <button id="back-to-countdown-btn" type="button" class="px-5 py-2.5 rounded-full bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold shadow-md transition-all cursor-pointer">
-                    Return to Live Countdown
+                    Terug naar Live Countdown
                 </button>
             </div>
 
@@ -238,7 +234,7 @@
                 <div class="flex items-center justify-between text-xs sm:text-sm font-medium text-emerald-800/80 mb-2">
                     <span class="flex items-center gap-1.5">
                         <span class="inline-block w-2 h-2 rounded-full bg-pink-400"></span>
-                        Journey to <span id="progress-target-label">March 21</span>
+                        Trip naar <span id="progress-target-label">21 maart</span>
                     </span>
                     <span id="progress-percentage" class="font-bold text-emerald-900 tabular-nums">0.0%</span>
                 </div>
@@ -246,9 +242,9 @@
                     <div id="progress-bar-fill" class="h-full rounded-full bg-gradient-to-r from-emerald-400 via-yellow-300 to-pink-400 relative progress-shimmer transition-all duration-700 ease-out" style="width: 0%;"></div>
                 </div>
                 <div class="flex justify-between text-[11px] text-emerald-700/65 mt-1.5">
-                    <span id="prev-spring-label">Last Spring</span>
-                    <span id="days-elapsed-label">Calculating seasonal cycle...</span>
-                    <span id="next-spring-label">Next Spring</span>
+                    <span id="prev-spring-label">Vorige Lente</span>
+                    <span id="days-elapsed-label">Seizoenscyclus berekenen ...</span>
+                    <span id="next-spring-label">Volgende Lente</span>
                 </div>
             </div>
 
@@ -257,6 +253,7 @@
 
     <!-- Footer -->
     <footer class="relative z-20 w-full max-w-5xl mx-auto px-4 pb-6 text-center text-xs sm:text-sm text-emerald-800/70">
+        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/1PFcbqfMA2ExR8XGqBXf8T?utm_source=generator&theme=1&si=814858835d0b4975" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         <p id="local-time-note">Synchronized to your local time zone</p>
     </footer>
 
@@ -294,7 +291,7 @@
             try {
                 const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 if (tz) {
-                    localTimeNote.textContent = `Counting down to midnight on March 21 (${tz.replace('_', ' ')})`;
+                    localTimeNote.textContent = `Aftellen naar middernacht 21 maart (${tz.replace('_', ' ')})`;
                 }
             } catch (e) {
                 // Fallback already present in HTML
@@ -376,8 +373,8 @@
 
                 const targetYear = targetDate.getFullYear();
                 targetYearEl.textContent = targetYear;
-                prevSpringLabel.textContent = `Mar 21, ${previousDate.getFullYear()}`;
-                nextSpringLabel.textContent = `Mar 21, ${targetYear}`;
+                prevSpringLabel.textContent = `21 maart, ${previousDate.getFullYear()}`;
+                nextSpringLabel.textContent = `21 maart, ${targetYear}`;
 
                 // Calculate progress through the seasonal year
                 const totalCycleMs = targetDate.getTime() - previousDate.getTime();
@@ -390,7 +387,7 @@
 
                 const totalDaysInCycle = Math.round(totalCycleMs / (1000 * 60 * 60 * 24));
                 const daysElapsed = Math.floor(elapsedMs / (1000 * 60 * 60 * 24));
-                daysElapsedLabel.textContent = `Day ${daysElapsed} of ${totalDaysInCycle}`;
+                daysElapsedLabel.textContent = `Dag ${daysElapsed} van ${totalDaysInCycle}`;
 
                 // Handle arrival of March 21 or preview mode
                 if (isPreviewingCelebration) {
