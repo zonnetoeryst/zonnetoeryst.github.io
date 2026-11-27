@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to Spring — March 21</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cormorant Garamond for elegant display, Plus Jakarta Sans for clean UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        spring: {
+                            mint: '#e8f5e9',
+                            sage: '#2d5a42',
+                            leaf: '#4caf50',
+                            blossom: '#ffb7c5',
+                            petal: '#ffd1dc',
+                            sun: '#fff59d',
+                            gold: '#fbc02d',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom styles for glassmorphism, animated ambient blobs, and canvas overlay */
+        body {
+            background: linear-gradient(135deg, #f3fbf4 0%, #fff9e6 45%, #fff0f5 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Ambient sunlight and pastel glow orbs */
+        .ambient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.65;
+        }
+
+        /* Glassmorphism card styling */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.58);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 
+                0 20px 40px -15px rgba(45, 90, 66, 0.08),
+                0 4px 16px -4px rgba(255, 183, 197, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .glass-digit-card {
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.45) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                0 10px 25px -5px rgba(45, 90, 66, 0.07),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+
+        .glass-digit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 16px 30px -5px rgba(45, 90, 66, 0.12),
+                0 0 20px rgba(255, 183, 197, 0.35);
+        }
+
+        /* Smooth tabular numbers so layout never jitters */
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Subtle tick animation on number change */
+        @keyframes digitPop {
+            0% { transform: scale(0.95); opacity: 0.75; }
+            60% { transform: scale(1.03); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .digit-update {
+            animation: digitPop 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Progress bar shimmer */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .progress-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: shimmer 2.8s infinite;
+        }
+    </style>
+</head>
+<body class="font-sans text-emerald-950 antialiased selection:bg-pink-200 selection:text-emerald-950 flex flex-col justify-between relative">
+
+    <!-- Ambient Pastel Background Orbs -->
+    <div class="ambient-orb w-80 h-80 sm:w-[32rem] sm:h-[32rem] bg-yellow-200/70 -top-20 -left-20 animate-pulse-slow"></div>
+    <div class="ambient-orb w-80 h-80 sm:w-[34rem] sm:h-[34rem] bg-pink-200/70 top-1/4 -right-24 animate-pulse-slow" style="animation-delay: 2s;"></div>
+    <div class="ambient-orb w-96 h-96 sm:w-[36rem] sm:h-[36rem] bg-emerald-200/60 -bottom-24 left-1/4 animate-pulse-slow" style="animation-delay: 4s;"></div>
+
+    <!-- Floating Cherry Blossom Petals & Leaves Canvas -->
+    <canvas id="spring-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-10"></canvas>
+
+    <!-- Top Subtle Header / Status Pill -->
+    <header class="relative z-20 w-full max-w-5xl mx-auto px-4 pt-6 sm:pt-8 flex flex-wrap items-center justify-between gap-3">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/70 backdrop-blur-md border border-white/80 shadow-sm text-xs sm:text-sm font-medium text-emerald-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            <span class="w-2 h-2 rounded-full bg-emerald-500 -ml-4"></span>
+            <span id="season-status-badge">Vernal Equinox Approaching</span>
+        </div>
+
+        <!-- Interactive Breeze / Celebration Test Controls -->
+        <div class="flex items-center gap-2">
+            <button id="gust-btn" type="button" class="px-3.5 py-1.5 rounded-full bg-white/70 hover:bg-white/95 active:scale-95 transition-all backdrop-blur-md border border-white/80 shadow-sm text-xs sm:text-sm font-medium text-emerald-800 flex items-center gap-1.5 cursor-pointer" title="Send a gentle spring breeze">
+                <svg class="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+                <span>Spring Breeze</span>
+            </button>
+            <button id="preview-celebration-btn" type="button" class="px-3.5 py-1.5 rounded-full bg-pink-100/80 hover:bg-pink-200/80 active:scale-95 transition-all backdrop-blur-md border border-pink-200/80 shadow-sm text-xs sm:text-sm font-medium text-pink-900 flex items-center gap-1.5 cursor-pointer" title="Preview what happens when the countdown reaches zero">
+                <span>Preview Bloom</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Centered Countdown Container -->
+    <main class="relative z-20 flex-grow flex items-center justify-center px-4 py-8 sm:py-12">
+        <section class="glass-panel w-full max-w-4xl rounded-3xl p-6 sm:p-10 md:p-12 text-center relative overflow-hidden">
+            
+            <!-- Decorative Corner Botanical SVG Accents -->
+            <svg class="absolute -top-6 -left-6 w-28 h-28 sm:w-36 sm:h-36 text-pink-300/45 pointer-events-none transform -rotate-12" viewBox="0 0 100 100" fill="currentColor">
+                <path d="M50 15 C58 28, 72 32, 85 50 C72 58, 58 72, 50 85 C42 72, 28 58, 15 50 C28 32, 42 28, 50 15 Z"/>
+                <circle cx="50" cy="50" r="8" fill="#fbc02d" opacity="0.7"/>
+            </svg>
+            <svg class="absolute -bottom-8 -right-8 w-32 h-32 sm:w-44 sm:h-44 text-emerald-300/40 pointer-events-none transform rotate-45" viewBox="0 0 100 100" fill="currentColor">
+                <path d="M50 10 C75 30, 85 60, 50 90 C15 60, 25 30, 50 10 Z"/>
+            </svg>
+
+            <!-- Subtitle & Target Year Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-100/90 via-yellow-100/90 to-pink-100/90 border border-white text-emerald-900 text-xs sm:text-sm font-semibold tracking-wide uppercase mb-4 shadow-xs">
+                <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+                </svg>
+                <span>March 21, <span id="target-year-display">2027</span></span>
+            </div>
+
+            <!-- Main Heading -->
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-emerald-950 tracking-tight leading-tight mb-3">
+                Countdown to <span class="italic bg-gradient-to-r from-emerald-700 via-teal-600 to-pink-600 bg-clip-text text-transparent">Spring</span>
+            </h1>
+            
+            <p id="subtitle-text" class="text-emerald-800/80 text-sm sm:text-base md:text-lg max-w-xl mx-auto mb-8 sm:mb-10 font-normal leading-relaxed">
+                Counting every sunlit moment until the blossoms awaken and nature blooms anew.
+            </p>
+
+            <!-- Countdown Grid (Hidden when celebration mode is active) -->
+            <div id="countdown-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5 md:gap-6 max-w-3xl mx-auto mb-8 sm:mb-10">
+                <!-- Days -->
+                <div class="glass-digit-card rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden">
+                    <div class="w-8 h-1 rounded-full bg-emerald-400/70 mb-3"></div>
+                    <span id="days" class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-emerald-950 tabular-nums leading-none">00</span>
+                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Days</span>
+                </div>
+
+                <!-- Hours -->
+                <div class="glass-digit-card rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden">
+                    <div class="w-8 h-1 rounded-full bg-amber-300/90 mb-3"></div>
+                    <span id="hours" class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-emerald-950 tabular-nums leading-none">00</span>
+                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Hours</span>
+                </div>
+
+                <!-- Minutes -->
+                <div class="glass-digit-card rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden">
+                    <div class="w-8 h-1 rounded-full bg-pink-300/90 mb-3"></div>
+                    <span id="minutes" class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-emerald-950 tabular-nums leading-none">00</span>
+                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Minutes</span>
+                </div>
+
+                <!-- Seconds -->
+                <div class="glass-digit-card rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden">
+                    <div class="w-8 h-1 rounded-full bg-rose-400/80 mb-3"></div>
+                    <span id="seconds" class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-pink-600 tabular-nums leading-none">00</span>
+                    <span class="mt-2.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-emerald-700/80">Seconds</span>
+                </div>
+            </div>
+
+            <!-- Celebratory Springtime Banner (Revealed when countdown reaches zero or previewed) -->
+            <div id="celebration-view" class="hidden max-w-2xl mx-auto mb-8 sm:mb-10 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-emerald-50/90 via-yellow-50/90 to-pink-50/90 border border-pink-200/80 shadow-inner animate-float">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-pink-100 text-pink-600 mb-4 shadow-sm">
+                    <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C13.5 5 16 6.5 19 6.5C17.5 9.5 18 12.5 20.5 14.5C17.5 15.5 15.5 17.5 15 20.5C12.5 18.5 9.5 18.5 7 20.5C6.5 17.5 4.5 15.5 1.5 14.5C4 12.5 4.5 9.5 3 6.5C6 6.5 8.5 5 10 2H12Z"/>
+                    </svg>
+                </div>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-emerald-950 mb-2">
+                    Spring Has Arrived!
+                </h2>
+                <p class="text-emerald-800/90 text-sm sm:text-base leading-relaxed mb-5">
+                    Happy First Day of Spring! May your days be filled with warm sunlight, fresh beginnings, and blooming joy.
+                </p>
+                <button id="back-to-countdown-btn" type="button" class="px-5 py-2.5 rounded-full bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold shadow-md transition-all cursor-pointer">
+                    Return to Live Countdown
+                </button>
+            </div>
+
+            <!-- Subtle Progress Bar Toward Spring -->
+            <div class="max-w-2xl mx-auto">
+                <div class="flex items-center justify-between text-xs sm:text-sm font-medium text-emerald-800/80 mb-2">
+                    <span class="flex items-center gap-1.5">
+                        <span class="inline-block w-2 h-2 rounded-full bg-pink-400"></span>
+                        Journey to <span id="progress-target-label">March 21</span>
+                    </span>
+                    <span id="progress-percentage" class="font-bold text-emerald-900 tabular-nums">0.0%</span>
+                </div>
+                <div class="w-full h-3 sm:h-3.5 bg-white/75 rounded-full p-0.5 border border-white shadow-inner overflow-hidden">
+                    <div id="progress-bar-fill" class="h-full rounded-full bg-gradient-to-r from-emerald-400 via-yellow-300 to-pink-400 relative progress-shimmer transition-all duration-700 ease-out" style="width: 0%;"></div>
+                </div>
+                <div class="flex justify-between text-[11px] text-emerald-700/65 mt-1.5">
+                    <span id="prev-spring-label">Last Spring</span>
+                    <span id="days-elapsed-label">Calculating seasonal cycle...</span>
+                    <span id="next-spring-label">Next Spring</span>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-20 w-full max-w-5xl mx-auto px-4 pb-6 text-center text-xs sm:text-sm text-emerald-800/70">
+        <p id="local-time-note">Synchronized to your local time zone</p>
+    </footer>
+
+    <script>
+        /**
+         * Spring Countdown & Interactive Cherry Blossom Petal Engine
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            const targetYearEl = document.getElementById('target-year-display');
+            const progressBarFill = document.getElementById('progress-bar-fill');
+            const progressPercentageEl = document.getElementById('progress-percentage');
+            const prevSpringLabel = document.getElementById('prev-spring-label');
+            const nextSpringLabel = document.getElementById('next-spring-label');
+            const daysElapsedLabel = document.getElementById('days-elapsed-label');
+            const countdownGrid = document.getElementById('countdown-grid');
+            const celebrationView = document.getElementById('celebration-view');
+            const subtitleText = document.getElementById('subtitle-text');
+            const statusBadge = document.getElementById('season-status-badge');
+            const localTimeNote = document.getElementById('local-time-note');
+
+            // Buttons
+            const gustBtn = document.getElementById('gust-btn');
+            const previewCelebrationBtn = document.getElementById('preview-celebration-btn');
+            const backToCountdownBtn = document.getElementById('back-to-countdown-btn');
+
+            let isPreviewingCelebration = false;
+            let lastValues = { days: null, hours: null, minutes: null, seconds: null };
+
+            // Display user's timezone nicely in footer
+            try {
+                const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                if (tz) {
+                    localTimeNote.textContent = `Counting down to midnight on March 21 (${tz.replace('_', ' ')})`;
+                }
+            } catch (e) {
+                // Fallback already present in HTML
+            }
+
+            /**
+             * Calculates the target March 21 date (00:00:00 local time)
+             * and the preceding March 21 date for annual progress calculation.
+             */
+            function getSpringDates(now) {
+                const currentYear = now.getFullYear();
+                // Month is 0-indexed: 2 = March, Day = 21
+                const thisYearSpring = new Date(currentYear, 2, 21, 0, 0, 0, 0);
+                
+                // Check if today IS March 21 (celebration day!)
+                const isMarch21Today = (now.getMonth() === 2 && now.getDate() === 21);
+
+                let targetDate;
+                let previousDate;
+
+                if (now < thisYearSpring) {
+                    targetDate = thisYearSpring;
+                    previousDate = new Date(currentYear - 1, 2, 21, 0, 0, 0, 0);
+                } else {
+                    targetDate = new Date(currentYear + 1, 2, 21, 0, 0, 0, 0);
+                    previousDate = thisYearSpring;
+                }
+
+                return { targetDate, previousDate, isMarch21Today };
+            }
+
+            /**
+             * Updates a digit element with a subtle pop animation when its value changes
+             */
+            function updateDigit(element, value, key, padLength = 2) {
+                const formatted = String(value).padStart(padLength, '0');
+                if (lastValues[key] !== formatted) {
+                    element.textContent = formatted;
+                    element.classList.remove('digit-update');
+                    // Trigger reflow to restart CSS animation
+                    void element.offsetWidth;
+                    element.classList.add('digit-update');
+                    lastValues[key] = formatted;
+                }
+            }
+
+            /**
+             * Triggers the celebratory spring state
+             */
+            function showCelebration(isSimulated = false) {
+                countdownGrid.classList.add('hidden');
+                celebrationView.classList.remove('hidden');
+                statusBadge.textContent = isSimulated ? 'Previewing Spring Arrival' : 'It is March 21 — Happy Spring!';
+                subtitleText.textContent = 'The wait is over — step outside and welcome the season of renewal.';
+                backToCountdownBtn.classList.toggle('hidden', !isSimulated);
+                
+                // Trigger a joyful burst of petals
+                burstPetals(65);
+            }
+
+            /**
+             * Restores the live countdown view
+             */
+            function hideCelebration() {
+                isPreviewingCelebration = false;
+                celebrationView.classList.add('hidden');
+                countdownGrid.classList.remove('hidden');
+                statusBadge.textContent = 'Vernal Equinox Approaching';
+                subtitleText.textContent = 'Counting every sunlit moment until the blossoms awaken and nature blooms anew.';
+                updateCountdown();
+            }
+
+            /**
+             * Main countdown tick function
+             */
+            function updateCountdown() {
+                const now = new Date();
+                const { targetDate, previousDate, isMarch21Today } = getSpringDates(now);
+
+                const targetYear = targetDate.getFullYear();
+                targetYearEl.textContent = targetYear;
+                prevSpringLabel.textContent = `Mar 21, ${previousDate.getFullYear()}`;
+                nextSpringLabel.textContent = `Mar 21, ${targetYear}`;
+
+                // Calculate progress through the seasonal year
+                const totalCycleMs = targetDate.getTime() - previousDate.getTime();
+                const elapsedMs = now.getTime() - previousDate.getTime();
+                const progressRatio = Math.min(1, Math.max(0, elapsedMs / totalCycleMs));
+                const progressPercent = (progressRatio * 100).toFixed(1);
+
+                progressBarFill.style.width = `${progressPercent}%`;
+                progressPercentageEl.textContent = `${progressPercent}%`;
+
+                const totalDaysInCycle = Math.round(totalCycleMs / (1000 * 60 * 60 * 24));
+                const daysElapsed = Math.floor(elapsedMs / (1000 * 60 * 60 * 24));
+                daysElapsedLabel.textContent = `Day ${daysElapsed} of ${totalDaysInCycle}`;
+
+                // Handle arrival of March 21 or preview mode
+                if (isPreviewingCelebration) {
+                    return;
+                }
+
+                if (isMarch21Today) {
+                    progressBarFill.style.width = '100%';
+                    progressPercentageEl.textContent = '100%';
+                    if (celebrationView.classList.contains('hidden')) {
+                        showCelebration(false);
+                    }
+                    return;
+                }
+
+                // Standard countdown calculation
+                const diffMs = Math.max(0, targetDate.getTime() - now.getTime());
+                const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((diffMs / 1000 / 60) % 60);
+                const seconds = Math.floor((diffMs / 1000) % 60);
+
+                updateDigit(daysEl, days, 'days', days >= 100 ? 3 : 2);
+                updateDigit(hoursEl, hours, 'hours', 2);
+                updateDigit(minutesEl, minutes, 'minutes', 2);
+                updateDigit(secondsEl, seconds, 'seconds', 2);
+            }
+
+            // Event Listeners for Interactive Controls
+            previewCelebrationBtn.addEventListener('click', () => {
+                isPreviewingCelebration = true;
+                showCelebration(true);
+            });
+
+            backToCountdownBtn.addEventListener('click', () => {
+                hideCelebration();
+            });
+
+            // Initialize countdown immediately & update every second
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            /* =========================================================================
+             * HTML5 Canvas Floating Cherry Blossom Petals & Fresh Leaves Animation
+             * ========================================================================= */
+            const canvas = document.getElementById('spring-canvas');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            // Wind force affected by user clicks or "Spring Breeze" button
+            let windGust = 0;
+
+            gustBtn.addEventListener('click', () => {
+                windGust = 6.5;
+                burstPetals(15);
+            });
+
+            // Subtle interactive breeze on pointer move
+            window.addEventListener('pointermove', (e) => {
+                const normalizedX = (e.clientX / width) - 0.5;
+                windGust += normalizedX * 0.08;
+                windGust = Math.max(-4, Math.min(4, windGust));
+            });
+
+            const petalColors = [
+                { fill: 'rgba(255, 183, 197, 0.85)', stroke: 'rgba(255, 148, 171, 0.4)' }, // Cherry blossom pink
+                { fill: 'rgba(255, 209, 220, 0.90)', stroke: 'rgba(255, 183, 197, 0.4)' }, // Soft pastel pink
+                { fill: 'rgba(255, 240, 245, 0.92)', stroke: 'rgba(255, 192, 203, 0.5)' }, // White-blossom tint
+                { fill: 'rgba(165, 214, 167, 0.78)', stroke: 'rgba(102, 187, 106, 0.35)' }, // Fresh spring leaf green
+                { fill: 'rgba(255, 245, 157, 0.75)', stroke: 'rgba(251, 192, 45, 0.3)' }   // Warm sunlight pollen speck
+            ];
+
+            class SpringParticle {
+                constructor(spawnAtTop = false) {
+                    this.reset(spawnAtTop);
+                }
+
+                reset(spawnAtTop = true) {
+                    this.x = Math.random() * (width + 200) - 100;
+                    this.y = spawnAtTop ? -20 - Math.random() * 100 : Math.random() * height;
+                    this.size = 6 + Math.random() * 9;
+                    this.speedY = 0.65 + Math.random() * 1.25;
+                    this.speedX = -0.4 + Math.random() * 0.8;
+                    this.angle = Math.random() * Math.PI * 2;
+                    this.spin = (Math.random() - 0.5) * 0.035;
+                    this.swayOffset = Math.random() * Math.PI * 2;
+                    this.swaySpeed = 0.015 + Math.random() * 0.02;
+                    this.flip = Math.random() * Math.PI;
+                    this.flipSpeed = 0.02 + Math.random() * 0.03;
+                    
+                    // Weight distribution: mostly pink petals, some green leaves
+                    const rand = Math.random();
+                    if (rand < 0.72) {
+                        this.palette = petalColors[Math.floor(Math.random() * 3)];
+                        this.type = 'petal';
+                    } else if (rand < 0.92) {
+                        this.palette = petalColors[3];
+                        this.type = 'leaf';
+                    } else {
+                        this.palette = petalColors[4];
+                        this.type = 'pollen';
+                        this.size = 3 + Math.random() * 3;
+                    }
+                }
+
+                update() {
+                    this.swayOffset += this.swaySpeed;
+                    this.angle += this.spin;
+                    this.flip += this.flipSpeed;
+
+                    this.y += this.speedY + Math.abs(windGust) * 0.12;
+                    this.x += this.speedX + Math.sin(this.swayOffset) * 0.85 + windGust;
+
+                    if (this.y > height + 30 || this.x > width + 150 || this.x < -150) {
+                        this.reset(true);
+                    }
+                }
+
+                draw(ctx) {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.angle);
+                    // Simulate 3D fluttering
+                    const scaleY = Math.max(0.25, Math.abs(Math.cos(this.flip)));
+                    ctx.scale(1, scaleY);
+
+                    ctx.fillStyle = this.palette.fill;
+                    ctx.strokeStyle = this.palette.stroke;
+                    ctx.lineWidth = 0.8;
+
+                    if (this.type === 'petal') {
+                        // Draw organic cherry blossom petal with subtle notch
+                        ctx.beginPath();
+                        ctx.moveTo(0, -this.size);
+                        ctx.bezierCurveTo(this.size * 0.9, -this.size * 0.6, this.size * 0.8, this.size * 0.6, 0, this.size);
+                        ctx.bezierCurveTo(-this.size * 0.8, this.size * 0.6, -this.size * 0.9, -this.size * 0.6, 0, -this.size);
+                        ctx.fill();
+                        ctx.stroke();
+                    } else if (this.type === 'leaf') {
+                        // Draw slender spring leaf
+                        ctx.beginPath();
+                        ctx.moveTo(0, -this.size * 1.1);
+                        ctx.quadraticCurveTo(this.size * 0.65, 0, 0, this.size * 1.1);
+                        ctx.quadraticCurveTo(-this.size * 0.65, 0, 0, -this.size * 1.1);
+                        ctx.fill();
+                        ctx.stroke();
+                    } else {
+                        // Soft glowing pollen particle
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    ctx.restore();
+                }
+            }
+
+            // Create initial particles responsive to screen width
+            const baseCount = Math.min(55, Math.max(24, Math.floor(width / 25)));
+            const particles = Array.from({ length: baseCount }, () => new SpringParticle(false));
+
+            /**
+             * Adds temporary burst of petals for celebrations or breezes
+             */
+            function burstPetals(count) {
+                for (let i = 0; i < count; i++) {
+                    const p = new SpringParticle(true);
+                    p.speedY *= 1.5;
+                    particles.push(p);
+                }
+                // Trim back down gracefully over time
+                setTimeout(() => {
+                    if (particles.length > baseCount) {
+                        particles.splice(baseCount, count);
+                    }
+                }, 7000);
+            }
+
+            function animateCanvas() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Gradually decay wind gust back to gentle calm
+                windGust *= 0.96;
+
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw(ctx);
+                }
+
+                requestAnimationFrame(animateCanvas);
+            }
+
+            animateCanvas();
+        });
+    </script>
+</body>
+</html>
